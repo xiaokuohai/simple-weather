@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.List;
+
+import cn.udday.simpleweather.Beans.ForecastBean;
 import cn.udday.simpleweather.Beans.NowBean;
 import cn.udday.simpleweather.utils.RetrofitImpl;
 import cn.udday.simpleweather.utils.WApi;
@@ -48,16 +51,60 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initDate() {
+
         WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
+        //实时天气
         wApi.postNowJson(city).enqueue(new Callback<NowBean>() {
             @Override
             public void onResponse(Call<NowBean> call, Response<NowBean> response) {
                 NowBean nowBean = response.body();
                 System.out.println(nowBean.toString());
+                //实时温度
+                mFragTvNowtemp.setText(nowBean.getData().getNow().getTmp()+"℃");
+                //城市
+                mFragTvCity.setText(nowBean.getData().getBasic().getLocation());
+                //实时天气
+                mFragTvCondition.setText(nowBean.getData().getNow().getCond_txt());
+                //更新时间
+                mFragTvDate.setText(nowBean.getData().getUpdate().getLoc().substring(0,9));
+                //风
+                mFragTvWind.setText(nowBean.getData().getNow().getWind_dir()+":"+nowBean.getData().getNow().getWind_sc()+"级");
+                //降水量
+                mFragTvPcpn.setText("降水量:"+nowBean.getData().getNow().getPcpn()+"MM");
+
             }
 
             @Override
             public void onFailure(Call<NowBean> call, Throwable t) {
+                Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //未来七日天气
+        wApi.postForecastJson(city).enqueue(new Callback<ForecastBean>() {
+            @Override
+            public void onResponse(Call<ForecastBean> call, Response<ForecastBean> response) {
+                List<ForecastBean.DataBean.DailyForecastBean> forecastList = response.body().getData().getDaily_forecast();
+                for (int i = 0; i < forecastList.size(); i++) {
+                    //Log.i("forecast",forecastList.get(i).toString());
+                    System.out.println(forecastList.get(i).toString());
+                    //创建item里面的元素填充
+                    View itemview = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center,null);
+                    itemview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                    mFragCenterLayout.addView(itemview);
+                    TextView mItemCenterTvDate = itemview.findViewById(R.id.item_center_tv_date);
+                    TextView mItemCenterTvCon = itemview.findViewById(R.id.item_center_tv_con);
+                    TextView mItemCenterTvTemp = itemview.findViewById(R.id.item_center_tv_temp);
+                    ImageView mItemCenterIv = itemview.findViewById(R.id.item_center_iv);
+                    //数据填充
+                    ForecastBean.DataBean.DailyForecastBean forecastBean = forecastList.get(i);
+                    mItemCenterTvDate.setText(forecastBean.getDate());
+                    mItemCenterTvCon.setText(forecastBean.getCond_txt_d());
+                    mItemCenterTvTemp.setText(forecastBean.getTmp_min()+"℃~"+forecastBean.getTmp_max()+"℃");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ForecastBean> call, Throwable t) {
                 Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
             }
         });

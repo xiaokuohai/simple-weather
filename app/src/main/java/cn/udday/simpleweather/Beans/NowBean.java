@@ -50,7 +50,7 @@ public class NowBean implements Serializable {
         private BasicBean basic;
         private UpdateBean update;
         private String status;
-        private NowBean now;
+        private NowBean1 now;
 
         public BasicBean getBasic() {
             return basic;
@@ -64,7 +64,7 @@ public class NowBean implements Serializable {
             return status;
         }
 
-        public NowBean getNow() {
+        public NowBean1 getNow() {
             return now;
         }
 
@@ -130,6 +130,14 @@ public class NowBean implements Serializable {
 
             private String loc;
             private String utc;
+
+            public String getLoc() {
+                return loc;
+            }
+
+            public String getUtc() {
+                return utc;
+            }
         }
 
         public static class NowBean1 implements Serializable {

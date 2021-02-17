@@ -25,18 +25,21 @@
                 android:text="北京"
                 style="@style/todaytext"
                 android:layout_below="@id/frag_tv_nowtemp"/>
+
             <TextView
                 android:id="@+id/frag_tv_condition"
                 style="@style/todaytext"
-                android:text="晴"
-                android:layout_below="@id/frag_tv_city"/>
+                android:layout_below="@id/frag_tv_city"
+                android:text="晴" />
+
             <TextView
                 android:id="@+id/frag_tv_date"
                 style="@style/todaytext"
-                android:text="2021-1-10"
-                android:layout_marginTop="20dp"
                 android:layout_below="@id/frag_tv_condition"
+                android:layout_marginTop="22dp"
+                android:text="2021-1-10"
                 />
+
             <TextView
                 android:id="@+id/frag_tv_wind"
                 style="@style/todaytext"
