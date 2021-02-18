@@ -2,4 +2,5 @@
     <string name="app_name">simpleweather</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fail_city">该城市未收录或者不存在</string>
 </resources>

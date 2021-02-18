@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.udday.simpleweather.Adapter.WeatherFragmentAdapter;
+import cn.udday.simpleweather.base.BaseActivity;
+import cn.udday.simpleweather.db.DBManager;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener{
+public class MainActivity extends BaseActivity implements OnClickListener{
     private RelativeLayout mMainBottomLayout;
     private ImageView mMainIvAdd;
     private ImageView mMainIvMore;
@@ -105,28 +108,29 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         mMainVp = findViewById(R.id.main_vp);
 
         fragmentList = new ArrayList<>();
-        cityList = new ArrayList<>();
+        cityList = DBManager.queryAllCityName();
+        if (cityList.size() == 0){
+            cityList.add("tt");
+        }
         imageViewList = new ArrayList<>();
     }
     public void setView(){
         mMainIvAdd.setOnClickListener(this);
         mMainIvMore.setOnClickListener(this);
         
-        if (cityList.size() == 0){
-            cityList.add("tongnan");
-            cityList.add("北京");
-            cityList.add("成都");
-        }
+
     }
     @Override
     public void onClick(View v){
+        Intent intent = new Intent();
         switch (v.getId()){
             case R.id.main_iv_add:
-
+            intent.setClass(this,CityManagerActivity.class);
                 break;
             case R.id.main_iv_more:
 
                 break;
         }
+        startActivity(intent);
     }
 }

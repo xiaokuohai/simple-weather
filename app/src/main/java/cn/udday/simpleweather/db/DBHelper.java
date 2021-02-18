@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table date(_id integer primary key autoincrement,city varchar(20) unique not null,nowContent text,hourlyContent text,forecastContent text,lifeContent text)";
+        String sql = "create table date(_id integer primary key autoincrement,city varchar(20) unique not null,nowContent text,forecastContent text,lifeContent text,hourlyContent text)";
         db.execSQL(sql);
     }
 

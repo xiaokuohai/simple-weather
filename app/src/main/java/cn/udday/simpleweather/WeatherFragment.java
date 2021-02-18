@@ -1,6 +1,8 @@
 package cn.udday.simpleweather;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import cn.udday.simpleweather.Beans.ForecastBean;
 import cn.udday.simpleweather.Beans.NowBean;
+import cn.udday.simpleweather.db.DBManager;
+import cn.udday.simpleweather.utils.Constants;
 import cn.udday.simpleweather.utils.RetrofitImpl;
 import cn.udday.simpleweather.utils.WApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherFragment extends Fragment implements View.OnClickListener{
 
@@ -57,26 +64,28 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
         wApi.postNowJson(city).enqueue(new Callback<NowBean>() {
             @Override
             public void onResponse(Call<NowBean> call, Response<NowBean> response) {
+            //解析展示数据
                 NowBean nowBean = response.body();
-                System.out.println(nowBean.toString());
-                //实时温度
-                mFragTvNowtemp.setText(nowBean.getData().getNow().getTmp()+"℃");
-                //城市
-                mFragTvCity.setText(nowBean.getData().getBasic().getLocation());
-                //实时天气
-                mFragTvCondition.setText(nowBean.getData().getNow().getCond_txt());
-                //更新时间
-                mFragTvDate.setText(nowBean.getData().getUpdate().getLoc().substring(0,9));
-                //风
-                mFragTvWind.setText(nowBean.getData().getNow().getWind_dir()+":"+nowBean.getData().getNow().getWind_sc()+"级");
-                //降水量
-                mFragTvPcpn.setText("降水量:"+nowBean.getData().getNow().getPcpn()+"MM");
-
+                putDate(nowBean);
+            //更新数据
+                int i = DBManager.upDateDateByCity(city, nowBean.toString(),Constants.DATE_NOW);
+                if(i <= 0){
+                    //更新数据库失败，及没有这个城市，就增加这条记录
+                    DBManager.addCityDate(city, nowBean.toString(), Constants.DATE_NOW);
+                }
             }
 
             @Override
             public void onFailure(Call<NowBean> call, Throwable t) {
                 Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
+                //在数据库中的上一次的数据来展示
+                String s = DBManager.queryDateByCity(city,Constants.DATE_NOW);
+                if (!TextUtils.isEmpty(s)){
+                    Gson gson = new Gson();
+                    NowBean nowBean = gson.fromJson(s, NowBean.class);
+                    putDate(nowBean);
+                }
+
             }
         });
         //未来七日天气
@@ -108,6 +117,22 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
                 Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void putDate(NowBean nowBean) {
+        System.out.println(nowBean.toString());
+        //实时温度
+        mFragTvNowtemp.setText(nowBean.getData().getNow().getTmp()+"℃");
+        //城市
+        mFragTvCity.setText(nowBean.getData().getBasic().getLocation());
+        //实时天气
+        mFragTvCondition.setText(nowBean.getData().getNow().getCond_txt());
+        //更新时间
+        mFragTvDate.setText(nowBean.getData().getUpdate().getLoc().substring(0,9));
+        //风
+        mFragTvWind.setText(nowBean.getData().getNow().getWind_dir()+":"+nowBean.getData().getNow().getWind_sc()+"级");
+        //降水量
+        mFragTvPcpn.setText("降水量:"+nowBean.getData().getNow().getPcpn()+"MM");
     }
 
     private void initView(View view) {

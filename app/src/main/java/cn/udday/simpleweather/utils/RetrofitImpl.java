@@ -35,8 +35,8 @@ public class RetrofitImpl {
 
         mRetrofit = new Retrofit.Builder()
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(ContextString.URL)
+                .addConverterFactory(MyConverterFactory.create())
+                .baseUrl(Constants.URL)
                 .build();
     }
 }
