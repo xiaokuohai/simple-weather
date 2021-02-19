@@ -5,23 +5,31 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.udday.simpleweather.Adapter.WeatherFragmentAdapter;
-import cn.udday.simpleweather.base.BaseActivity;
+import cn.udday.simpleweather.Beans.ForecastBean;
+import cn.udday.simpleweather.Beans.HourlyBean;
+import cn.udday.simpleweather.Beans.LifeBean;
+import cn.udday.simpleweather.Beans.NowBean;
+import cn.udday.simpleweather.adapter.WeatherFragmentAdapter;
 import cn.udday.simpleweather.db.DBManager;
+import cn.udday.simpleweather.utils.Constants;
+import cn.udday.simpleweather.utils.HttpBackListenter;
+import cn.udday.simpleweather.utils.Net;
+import retrofit2.Call;
 
-public class MainActivity extends BaseActivity implements OnClickListener{
-    private RelativeLayout mMainBottomLayout;
+public class MainActivity extends AppCompatActivity implements OnClickListener{
+    private RelativeLayout mMainBaseLayout;
     private ImageView mMainIvAdd;
     private ImageView mMainIvMore;
     private LinearLayout mMainLayoutPoint;
@@ -31,18 +39,65 @@ public class MainActivity extends BaseActivity implements OnClickListener{
     //viewpager指示
     List<ImageView> imageViewList;
     //传入的城市集合
-    ArrayList<String> cityList;
+    private ArrayList<String> cityList;
 
     private WeatherFragmentAdapter adapter;
-
+    private SharedPreferences bg;
+    private int bgid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initNet();
         initView();
+        changeBg();
         setView();
+        //搜索界面传值
+        getCityFromSearch();
         initPager();
         setPager();
+    }
+
+    private void initNet() {
+        cityList = DBManager.queryAllCityName();
+        if (cityList.size() == 0){
+            cityList.add("潼南");
+        }
+        //for (int i = 0; i < cityList.size(); i++) {
+            //int finalI = i;
+//            new Net(cityList.get(i), new HttpBackListenter() {
+//                @Override
+//                public void onSuccess(NowBean nowBean, ForecastBean forecastBean, LifeBean lifeBean, HourlyBean hourlyBean) {
+//                    int t = DBManager.upDateDateByCity(cityList.get(finalI), nowBean.toString(), Constants.DATE_NOW);
+//                    DBManager.upDateDateByCity(cityList.get(finalI), forecastBean.toString(), Constants.DATE_FORECAST);
+//                    DBManager.upDateDateByCity(cityList.get(finalI), lifeBean.toString(), Constants.DATE_LIFE);
+//                    DBManager.upDateDateByCity(cityList.get(finalI), hourlyBean.toString(), Constants.DATE_HOURLY);
+//                    if (t <= 0) {
+//                        //更新数据库失败，及没有这个城市，就增加这条记录
+//                        DBManager.addCityDate(cityList.get(finalI), nowBean.toString(), Constants.DATE_NOW);D
+//                        DBManager.addCityDate(cityList.get(finalI), forecastBean.toString(), Constants.DATE_FORECAST);
+//                        DBManager.addCityDate(cityList.get(finalI), lifeBean.toString(), Constants.DATE_LIFE);
+//                        DBManager.addCityDate(cityList.get(finalI), hourlyBean.toString(), Constants.DATE_HOURLY);
+//                    }
+//                }
+//
+//                @Override
+//                public void onError(Call call, Throwable t) {
+//
+//                }
+//            });
+        //}
+
+    }
+
+    //搜索界面跳转接受值
+    private void getCityFromSearch() {
+    Intent intent = getIntent();
+    String city = intent.getStringExtra("city");
+    //判断是否存在于list
+        if (!cityList.contains(city) && city != null){
+            cityList.add(city);
+        }
     }
 
     private void setPager() {
@@ -101,25 +156,41 @@ public class MainActivity extends BaseActivity implements OnClickListener{
     }
 
     private void initView() {
-        mMainBottomLayout = findViewById(R.id.main_bottom_layout);
+        mMainBaseLayout = findViewById(R.id.main_base_layout);
         mMainIvAdd = findViewById(R.id.main_iv_add);
         mMainIvMore = findViewById(R.id.main_iv_more);
         mMainLayoutPoint = findViewById(R.id.main_layout_point);
         mMainVp = findViewById(R.id.main_vp);
 
         fragmentList = new ArrayList<>();
-        cityList = DBManager.queryAllCityName();
-        if (cityList.size() == 0){
-            cityList.add("tt");
-        }
+
         imageViewList = new ArrayList<>();
     }
+
     public void setView(){
         mMainIvAdd.setOnClickListener(this);
         mMainIvMore.setOnClickListener(this);
-        
+
 
     }
+    //换壁纸
+    private void changeBg() {
+        bg = getSharedPreferences("bg", MODE_PRIVATE);
+        bgid = bg.getInt("bgid", 2);
+        switch (bgid) {
+            case 0:
+                mMainBaseLayout.setBackgroundResource(R.mipmap.bg);
+                break;
+            case 1:
+                mMainBaseLayout.setBackgroundResource(R.mipmap.bg2);
+                break;
+            case 2:
+                mMainBaseLayout.setBackgroundResource(R.mipmap.bg3);
+                break;
+        }
+
+    }
+
     @Override
     public void onClick(View v){
         Intent intent = new Intent();
@@ -128,9 +199,11 @@ public class MainActivity extends BaseActivity implements OnClickListener{
             intent.setClass(this,CityManagerActivity.class);
                 break;
             case R.id.main_iv_more:
-
+            intent.setClass(this,MoreActivity.class);
                 break;
         }
         startActivity(intent);
     }
+
+
 }

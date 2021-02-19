@@ -19,6 +19,23 @@ public class LifeBean implements Serializable {
     private int time;
     private long log_id;
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":")
+                .append(code);
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append(",\"data\":")
+                .append(data);
+        sb.append(",\"time\":")
+                .append(time);
+        sb.append(",\"log_id\":")
+                .append(log_id);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public DataBean getData() {
         return data;
     }
@@ -35,6 +52,21 @@ public class LifeBean implements Serializable {
         private UpdateBean update;
         private String status;
         private List<LifestyleBean> lifestyle;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("{");
+            sb.append("\"basic\":")
+                    .append(basic);
+            sb.append(",\"update\":")
+                    .append(update);
+            sb.append(",\"status\":\"")
+                    .append(status).append('\"');
+            sb.append(",\"lifestyle\":")
+                    .append(lifestyle);
+            sb.append('}');
+            return sb.toString();
+        }
 
         public List<LifestyleBean> getLifestyle() {
             return lifestyle;
@@ -60,6 +92,29 @@ public class LifeBean implements Serializable {
             private String lat;
             private String lon;
             private String tz;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cid\":\"")
+                        .append(cid).append('\"');
+                sb.append(",\"location\":\"")
+                        .append(location).append('\"');
+                sb.append(",\"parent_city\":\"")
+                        .append(parent_city).append('\"');
+                sb.append(",\"admin_area\":\"")
+                        .append(admin_area).append('\"');
+                sb.append(",\"cnty\":\"")
+                        .append(cnty).append('\"');
+                sb.append(",\"lat\":\"")
+                        .append(lat).append('\"');
+                sb.append(",\"lon\":\"")
+                        .append(lon).append('\"');
+                sb.append(",\"tz\":\"")
+                        .append(tz).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class UpdateBean implements Serializable {
@@ -70,6 +125,17 @@ public class LifeBean implements Serializable {
 
             private String loc;
             private String utc;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"loc\":\"")
+                        .append(loc).append('\"');
+                sb.append(",\"utc\":\"")
+                        .append(utc).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class LifestyleBean implements Serializable {
@@ -93,6 +159,19 @@ public class LifeBean implements Serializable {
 
             public String getTxt() {
                 return txt;
+            }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"type\":\"")
+                        .append(type).append('\"');
+                sb.append(",\"brf\":\"")
+                        .append(brf).append('\"');
+                sb.append(",\"txt\":\"")
+                        .append(txt).append('\"');
+                sb.append('}');
+                return sb.toString();
             }
         }
     }

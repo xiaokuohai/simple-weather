@@ -19,6 +19,23 @@ public class HourlyBean implements Serializable {
     private int time;
     private long log_id;
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":")
+                .append(code);
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append(",\"data\":")
+                .append(data);
+        sb.append(",\"time\":")
+                .append(time);
+        sb.append(",\"log_id\":")
+                .append(log_id);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public static class DataBean implements Serializable {
         /**
          * basic : {"cid":"CN101042100","location":"潼南","parent_city":"重庆","admin_area":"重庆市","cnty":"中国","lat":"30.18955421","lon":"105.84181976","tz":"+8.00"}
@@ -31,6 +48,21 @@ public class HourlyBean implements Serializable {
         private UpdateBean update;
         private String status;
         private List<HourlyBean1> hourly;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("{");
+            sb.append("\"basic\":")
+                    .append(basic);
+            sb.append(",\"update\":")
+                    .append(update);
+            sb.append(",\"status\":\"")
+                    .append(status).append('\"');
+            sb.append(",\"hourly\":")
+                    .append(hourly);
+            sb.append('}');
+            return sb.toString();
+        }
 
         public BasicBean getBasic() {
             return basic;
@@ -68,6 +100,29 @@ public class HourlyBean implements Serializable {
             private String lat;
             private String lon;
             private String tz;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cid\":\"")
+                        .append(cid).append('\"');
+                sb.append(",\"location\":\"")
+                        .append(location).append('\"');
+                sb.append(",\"parent_city\":\"")
+                        .append(parent_city).append('\"');
+                sb.append(",\"admin_area\":\"")
+                        .append(admin_area).append('\"');
+                sb.append(",\"cnty\":\"")
+                        .append(cnty).append('\"');
+                sb.append(",\"lat\":\"")
+                        .append(lat).append('\"');
+                sb.append(",\"lon\":\"")
+                        .append(lon).append('\"');
+                sb.append(",\"tz\":\"")
+                        .append(tz).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
 
             public String getCid() {
                 return cid;
@@ -110,6 +165,17 @@ public class HourlyBean implements Serializable {
 
             private String loc;
             private String utc;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"loc\":\"")
+                        .append(loc).append('\"');
+                sb.append(",\"utc\":\"")
+                        .append(utc).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class HourlyBean1 implements Serializable {
@@ -193,6 +259,39 @@ public class HourlyBean implements Serializable {
 
             public String getWind_spd() {
                 return wind_spd;
+            }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cloud\":\"")
+                        .append(cloud).append('\"');
+                sb.append(",\"cond_code\":\"")
+                        .append(cond_code).append('\"');
+                sb.append(",\"cond_txt\":\"")
+                        .append(cond_txt).append('\"');
+                sb.append(",\"dew\":\"")
+                        .append(dew).append('\"');
+                sb.append(",\"hum\":\"")
+                        .append(hum).append('\"');
+                sb.append(",\"pop\":\"")
+                        .append(pop).append('\"');
+                sb.append(",\"pres\":\"")
+                        .append(pres).append('\"');
+                sb.append(",\"time\":\"")
+                        .append(time).append('\"');
+                sb.append(",\"tmp\":\"")
+                        .append(tmp).append('\"');
+                sb.append(",\"wind_deg\":\"")
+                        .append(wind_deg).append('\"');
+                sb.append(",\"wind_dir\":\"")
+                        .append(wind_dir).append('\"');
+                sb.append(",\"wind_sc\":\"")
+                        .append(wind_sc).append('\"');
+                sb.append(",\"wind_spd\":\"")
+                        .append(wind_spd).append('\"');
+                sb.append('}');
+                return sb.toString();
             }
         }
     }

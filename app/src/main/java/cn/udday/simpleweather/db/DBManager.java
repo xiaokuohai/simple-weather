@@ -5,9 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.udday.simpleweather.Beans.AllBean;
+import cn.udday.simpleweather.Beans.BaseBean;
+import cn.udday.simpleweather.Beans.ForecastBean;
+import cn.udday.simpleweather.Beans.HourlyBean;
+import cn.udday.simpleweather.Beans.LifeBean;
+import cn.udday.simpleweather.Beans.NowBean;
 import cn.udday.simpleweather.utils.Constants;
 
 public class DBManager {
@@ -74,5 +83,63 @@ public class DBManager {
             return date.getString(date.getColumnIndex(type));
         }
         return null;
+    }
+    //存储城市天气最多5个
+    public static int getCityCount(){
+        Cursor date = database.query("date", null, null, null, null, null, null);
+        int count = date.getCount();
+        return count;
+    }
+    //查询数据库中的全部信息
+    public static List<AllBean> queryAllDate(){
+        Cursor date = database.query("date",null, null, null, null, null, null);
+        List<AllBean> list = new ArrayList<>();
+        while(date.moveToNext()){
+            int id = date.getInt(date.getColumnIndex("_id"));
+            String city = date.getString(date.getColumnIndex("city"));
+            String nowString = date.getString(date.getColumnIndex(Constants.DATE_NOW));
+            String forecastString = date.getString(date.getColumnIndex(Constants.DATE_FORECAST));
+            String lifeString = date.getString(date.getColumnIndex(Constants.DATE_LIFE));
+            String hourlyString = date.getString(date.getColumnIndex(Constants.DATE_HOURLY));
+            Gson gson = new Gson();
+            NowBean nowBean = gson.fromJson(nowString, NowBean.class);
+            ForecastBean forecastBean = gson.fromJson(forecastString, ForecastBean.class);
+            LifeBean lifeBean = gson.fromJson(lifeString, LifeBean.class);
+            HourlyBean hourlyBean = gson.fromJson(hourlyString, HourlyBean.class);
+            AllBean allBean = new AllBean(id, city, nowBean, forecastBean, lifeBean, hourlyBean);
+            list.add(allBean);
+        }
+        return list;
+    }
+    //查询单个的数据
+    public static AllBean queryOneDateByCity(String city){
+        Cursor date = database.query("date",null, "city=?", new String[]{city}, null, null, null);
+        if (date.getCount() > 0) {
+            date.moveToFirst();
+            int id = date.getInt(date.getColumnIndex("_id"));
+            String city1 = date.getString(date.getColumnIndex("city"));
+            String nowString = date.getString(date.getColumnIndex(Constants.DATE_NOW));
+            String forecastString = date.getString(date.getColumnIndex(Constants.DATE_FORECAST));
+            String lifeString = date.getString(date.getColumnIndex(Constants.DATE_LIFE));
+            String hourlyString = date.getString(date.getColumnIndex(Constants.DATE_HOURLY));
+            Gson gson = new Gson();
+            NowBean nowBean = gson.fromJson(nowString, NowBean.class);
+            ForecastBean forecastBean = gson.fromJson(forecastString, ForecastBean.class);
+            LifeBean lifeBean = gson.fromJson(lifeString, LifeBean.class);
+            HourlyBean hourlyBean = gson.fromJson(hourlyString, HourlyBean.class);
+            AllBean allBean = new AllBean(id, city1, nowBean, forecastBean, lifeBean, hourlyBean);
+            return allBean;
+        }
+        return null;
+    }
+    //根据城市名称删除这个城市在数据库中的数据
+    public static int deleteDateByCity(String city){
+        return database.delete("date","city=?",new String[]{city});
+
+    }
+    //删除表中所有信息
+    public static void deleteAllDate(){
+        String sql = "delete from date";
+        database.execSQL(sql);
     }
 }

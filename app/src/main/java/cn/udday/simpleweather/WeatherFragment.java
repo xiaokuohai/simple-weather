@@ -1,5 +1,6 @@
 package cn.udday.simpleweather;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,19 +21,27 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import cn.udday.simpleweather.Beans.AllBean;
 import cn.udday.simpleweather.Beans.ForecastBean;
+import cn.udday.simpleweather.Beans.HourlyBean;
+import cn.udday.simpleweather.Beans.LifeBean;
 import cn.udday.simpleweather.Beans.NowBean;
 import cn.udday.simpleweather.db.DBManager;
 import cn.udday.simpleweather.utils.Constants;
+import cn.udday.simpleweather.utils.HttpBackListenter;
+import cn.udday.simpleweather.utils.Net;
 import cn.udday.simpleweather.utils.RetrofitImpl;
 import cn.udday.simpleweather.utils.WApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class WeatherFragment extends Fragment implements View.OnClickListener{
+import static android.content.Context.MODE_PRIVATE;
 
+public class WeatherFragment extends Fragment implements View.OnClickListener{
+    private ScrollView mFragSv;
     private LinearLayout mFragLayout;
     private TextView mFragTvNowtemp;
     private TextView mFragTvCity;
@@ -48,78 +58,81 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
     private TextView mFragTvSport;
     private TextView mFragTvRays;
     private String city;
+    private SharedPreferences bg;
+    private int bgid;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather,container,false);
         initView(view);
-        initDate();
+        changeBg();
+        initNet();
+
         return view;
     }
 
-    private void initDate() {
-
+    private void initNet() {
         WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
-        //实时天气
         wApi.postNowJson(city).enqueue(new Callback<NowBean>() {
             @Override
-            public void onResponse(Call<NowBean> call, Response<NowBean> response) {
-            //解析展示数据
-                NowBean nowBean = response.body();
-                putDate(nowBean);
-            //更新数据
-                int i = DBManager.upDateDateByCity(city, nowBean.toString(),Constants.DATE_NOW);
-                if(i <= 0){
-                    //更新数据库失败，及没有这个城市，就增加这条记录
-                    DBManager.addCityDate(city, nowBean.toString(), Constants.DATE_NOW);
-                }
+            public void onResponse(Call<NowBean> call, Response<NowBean> nowBeanResponse) {
+                wApi.postForecastJson(city).enqueue(new Callback<ForecastBean>() {
+                    @Override
+                    public void onResponse(Call<ForecastBean> call, Response<ForecastBean> forecastBeanResponse) {
+                        NowBean nowBean = nowBeanResponse.body();
+                        ForecastBean forecastBean = forecastBeanResponse.body();
+
+                        int t = DBManager.upDateDateByCity(city, nowBean.toString(), Constants.DATE_NOW);
+                        DBManager.upDateDateByCity(city, forecastBean.toString(), Constants.DATE_FORECAST);
+                        if (t <= 0) {
+                            //更新数据库失败，及没有这个城市，就增加这条记录
+                            DBManager.addCityDate(city, nowBean.toString(), Constants.DATE_NOW);
+                            DBManager.upDateDateByCity(city, forecastBean.toString(), Constants.DATE_FORECAST);
+                        }
+                        initDate();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ForecastBean> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
             public void onFailure(Call<NowBean> call, Throwable t) {
-                Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
-                //在数据库中的上一次的数据来展示
-                String s = DBManager.queryDateByCity(city,Constants.DATE_NOW);
-                if (!TextUtils.isEmpty(s)){
-                    Gson gson = new Gson();
-                    NowBean nowBean = gson.fromJson(s, NowBean.class);
-                    putDate(nowBean);
-                }
 
-            }
-        });
-        //未来七日天气
-        wApi.postForecastJson(city).enqueue(new Callback<ForecastBean>() {
-            @Override
-            public void onResponse(Call<ForecastBean> call, Response<ForecastBean> response) {
-                List<ForecastBean.DataBean.DailyForecastBean> forecastList = response.body().getData().getDaily_forecast();
-                for (int i = 0; i < forecastList.size(); i++) {
-                    //Log.i("forecast",forecastList.get(i).toString());
-                    System.out.println(forecastList.get(i).toString());
-                    //创建item里面的元素填充
-                    View itemview = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center,null);
-                    itemview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                    mFragCenterLayout.addView(itemview);
-                    TextView mItemCenterTvDate = itemview.findViewById(R.id.item_center_tv_date);
-                    TextView mItemCenterTvCon = itemview.findViewById(R.id.item_center_tv_con);
-                    TextView mItemCenterTvTemp = itemview.findViewById(R.id.item_center_tv_temp);
-                    ImageView mItemCenterIv = itemview.findViewById(R.id.item_center_iv);
-                    //数据填充
-                    ForecastBean.DataBean.DailyForecastBean forecastBean = forecastList.get(i);
-                    mItemCenterTvDate.setText(forecastBean.getDate());
-                    mItemCenterTvCon.setText(forecastBean.getCond_txt_d());
-                    mItemCenterTvTemp.setText(forecastBean.getTmp_min()+"℃~"+forecastBean.getTmp_max()+"℃");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ForecastBean> call, Throwable t) {
-                Toast.makeText(getContext(),"网络错误", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void putDate(NowBean nowBean) {
+    private void initDate() {
+        AllBean allBean = DBManager.queryOneDateByCity(city);
+        putNowDate(allBean.getNowBean());
+        putForecastBean(allBean.getForecastBean());}
+
+    private void putForecastBean(ForecastBean forecastBean) {
+        List<ForecastBean.DataBean.DailyForecastBean> forecastList = forecastBean.getData().getDaily_forecast();
+        for (int i = 0; i < forecastList.size(); i++) {
+            //Log.i("forecast",forecastList.get(i).toString());
+            System.out.println(forecastList.get(i).toString());
+            //创建item里面的元素填充
+            View itemview = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center,null);
+            itemview.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+            mFragCenterLayout.addView(itemview);
+            TextView mItemCenterTvDate = itemview.findViewById(R.id.item_center_tv_date);
+            TextView mItemCenterTvCon = itemview.findViewById(R.id.item_center_tv_con);
+            TextView mItemCenterTvTemp = itemview.findViewById(R.id.item_center_tv_temp);
+            ImageView mItemCenterIv = itemview.findViewById(R.id.item_center_iv);
+            //数据填充
+            ForecastBean.DataBean.DailyForecastBean forecastBean1 = forecastList.get(i);
+            mItemCenterTvDate.setText(forecastBean1.getDate());
+            mItemCenterTvCon.setText(forecastBean1.getCond_txt_d());
+            mItemCenterTvTemp.setText(forecastBean1.getTmp_min()+"℃~"+forecastBean1.getTmp_max()+"℃");
+        }
+    }
+
+    private void putNowDate(NowBean nowBean) {
         System.out.println(nowBean.toString());
         //实时温度
         mFragTvNowtemp.setText(nowBean.getData().getNow().getTmp()+"℃");
@@ -134,9 +147,25 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
         //降水量
         mFragTvPcpn.setText("降水量:"+nowBean.getData().getNow().getPcpn()+"MM");
     }
+    private void changeBg() {
+        bg = getActivity().getSharedPreferences("bg", MODE_PRIVATE);
+        bgid = bg.getInt("bgid", 2);
+        switch (bgid) {
+            case 0:
+                mFragSv.setBackgroundResource(R.mipmap.bg);
+                break;
+            case 1:
+                mFragSv.setBackgroundResource(R.mipmap.bg2);
+                break;
+            case 2:
+                mFragSv.setBackgroundResource(R.mipmap.bg3);
+                break;
+        }
 
+    }
     private void initView(View view) {
         //初始化
+        mFragSv = view.findViewById(R.id.frag_sv);
         mFragLayout = view.findViewById(R.id.frag_layout);
         mFragTvNowtemp = view.findViewById(R.id.frag_tv_nowtemp);
         mFragTvCity = view.findViewById(R.id.frag_tv_city);

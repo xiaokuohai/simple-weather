@@ -2,6 +2,7 @@ package cn.udday.simpleweather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +10,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.udday.simpleweather.Beans.AllBean;
 import cn.udday.simpleweather.Beans.NowBean;
+import cn.udday.simpleweather.adapter.CityManagerAdapter;
+import cn.udday.simpleweather.db.DBManager;
 
 public class CityManagerActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,6 +26,7 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
     private ImageView mCityIvDelete;
     private ListView mCityLv;
     private ImageView mCityIvAdd;
+    private CityManagerAdapter adapter;
     //显示列表数据源
     List<NowBean> mNowBeanDate;
 
@@ -29,13 +35,26 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city_manager);
         initView();
-        setView();
         initDate();
+        setView();
+
+    }
+//删除后回到这，获取数据，更新适配器
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<AllBean> allBeans = DBManager.queryAllDate();
+        mNowBeanDate.clear();
+        for (int i = 0; i < allBeans.size(); i++) {
+            NowBean nowBean = allBeans.get(i).getNowBean();
+            mNowBeanDate.add(nowBean);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void setView() {
-
-
+        adapter = new CityManagerAdapter(this,mNowBeanDate);
+        mCityLv.setAdapter(adapter);
     }
 
     private void initDate() {
@@ -54,20 +73,27 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
         mCityTopIvBack.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
         switch (v.getId()){
             case R.id.city_iv_add:
-                intent.setClass(this,CitySearchActivity.class);
+                int cityCount = DBManager.getCityCount();
+                if (cityCount < 5){
+                Intent intent = new Intent(this,CitySearchActivity.class);
+                startActivity(intent);
+                }else{
+                    Toast.makeText(this,"最多存储5个城市,请删除后再添加",Toast.LENGTH_SHORT).show();
+                }
             break;
             case R.id.city_iv_delete:
-                intent.setClass(this,CityDeleteActivity.class);
+                Intent intent = new Intent(this,CityDeleteActivity.class);
+                startActivity(intent);
             break;
             case R.id.city_top_iv_back:
                 finish();
             break;
         }
-        startActivity(intent);
+
     }
 }

@@ -1,37 +1,38 @@
-package cn.udday.simpleweather.base;
-
-import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
+package cn.udday.simpleweather.utils;
 
 import cn.udday.simpleweather.Beans.ForecastBean;
 import cn.udday.simpleweather.Beans.HourlyBean;
 import cn.udday.simpleweather.Beans.LifeBean;
 import cn.udday.simpleweather.Beans.NowBean;
-import cn.udday.simpleweather.utils.HttpBackListenter;
-import cn.udday.simpleweather.utils.MyThrowable;
-import cn.udday.simpleweather.utils.RetrofitImpl;
-import cn.udday.simpleweather.utils.WApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BaseActivity extends AppCompatActivity{
-    public void loadDate(String city, HttpBackListenter backListenter){
+public class Net {
+    NowBean nowBean;
+    HourlyBean hourlyBean;
+    LifeBean lifeBean;
+    ForecastBean forecastBean;
+    public Net(String city,HttpBackListenter backListenter){
         WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
         wApi.postNowJson(city).enqueue(new Callback<NowBean>() {
             @Override
             public void onResponse(Call<NowBean> call, Response<NowBean> nowResponse) {
+                nowBean = nowResponse.body();
                 wApi.postForecastJson(city).enqueue(new Callback<ForecastBean>() {
                     @Override
                     public void onResponse(Call<ForecastBean> call, Response<ForecastBean> forecastSponse) {
+                        forecastBean = forecastSponse.body();
                         wApi.postLifeJson(city).enqueue(new Callback<LifeBean>() {
                             @Override
                             public void onResponse(Call<LifeBean> call, Response<LifeBean> lifeResponse) {
+                                lifeBean = lifeResponse.body();
                                 wApi.postHourlyJson(city).enqueue(new Callback<HourlyBean>() {
                                     @Override
                                     public void onResponse(Call<HourlyBean> call, Response<HourlyBean> hourlyResponse) {
-                                        backListenter.onSuccess(nowResponse.body(),forecastSponse.body(),lifeResponse.body(),hourlyResponse.body());
+                                        hourlyBean = hourlyResponse.body();
+                                        System.out.println(hourlyResponse);
+                                        backListenter.onSuccess(nowBean,forecastBean,lifeBean,hourlyBean);
                                     }
 
                                     @Override
@@ -63,9 +64,6 @@ public class BaseActivity extends AppCompatActivity{
 
             }
         });
-
-
-
     }
 
 }

@@ -19,6 +19,23 @@ public class ForecastBean implements Serializable {
     private int time;
     private long log_id;
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":")
+                .append(code);
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append(",\"data\":")
+                .append(data);
+        sb.append(",\"time\":")
+                .append(time);
+        sb.append(",\"log_id\":")
+                .append(log_id);
+        sb.append('}');
+        return sb.toString();
+    }
+
     public DataBean getData() {
         return data;
     }
@@ -35,6 +52,21 @@ public class ForecastBean implements Serializable {
         private UpdateBean update;
         private String status;
         private List<DailyForecastBean> daily_forecast;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("{");
+            sb.append("\"basic\":")
+                    .append(basic);
+            sb.append(",\"update\":")
+                    .append(update);
+            sb.append(",\"status\":\"")
+                    .append(status).append('\"');
+            sb.append(",\"daily_forecast\":")
+                    .append(daily_forecast);
+            sb.append('}');
+            return sb.toString();
+        }
 
         public List<DailyForecastBean> getDaily_forecast() {
             return daily_forecast;
@@ -60,6 +92,29 @@ public class ForecastBean implements Serializable {
             private String lat;
             private String lon;
             private String tz;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cid\":\"")
+                        .append(cid).append('\"');
+                sb.append(",\"location\":\"")
+                        .append(location).append('\"');
+                sb.append(",\"parent_city\":\"")
+                        .append(parent_city).append('\"');
+                sb.append(",\"admin_area\":\"")
+                        .append(admin_area).append('\"');
+                sb.append(",\"cnty\":\"")
+                        .append(cnty).append('\"');
+                sb.append(",\"lat\":\"")
+                        .append(lat).append('\"');
+                sb.append(",\"lon\":\"")
+                        .append(lon).append('\"');
+                sb.append(",\"tz\":\"")
+                        .append(tz).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class UpdateBean implements Serializable {
@@ -70,6 +125,17 @@ public class ForecastBean implements Serializable {
 
             private String loc;
             private String utc;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"loc\":\"")
+                        .append(loc).append('\"');
+                sb.append(",\"utc\":\"")
+                        .append(utc).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class DailyForecastBean implements Serializable {
@@ -118,6 +184,55 @@ public class ForecastBean implements Serializable {
             private String wind_dir;
             private String wind_sc;
             private String wind_spd;
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cond_code_d\":\"")
+                        .append(cond_code_d).append('\"');
+                sb.append(",\"cond_code_n\":\"")
+                        .append(cond_code_n).append('\"');
+                sb.append(",\"cond_txt_d\":\"")
+                        .append(cond_txt_d).append('\"');
+                sb.append(",\"cond_txt_n\":\"")
+                        .append(cond_txt_n).append('\"');
+                sb.append(",\"date\":\"")
+                        .append(date).append('\"');
+                sb.append(",\"hum\":\"")
+                        .append(hum).append('\"');
+                sb.append(",\"mr\":\"")
+                        .append(mr).append('\"');
+                sb.append(",\"ms\":\"")
+                        .append(ms).append('\"');
+                sb.append(",\"pcpn\":\"")
+                        .append(pcpn).append('\"');
+                sb.append(",\"pop\":\"")
+                        .append(pop).append('\"');
+                sb.append(",\"pres\":\"")
+                        .append(pres).append('\"');
+                sb.append(",\"sr\":\"")
+                        .append(sr).append('\"');
+                sb.append(",\"ss\":\"")
+                        .append(ss).append('\"');
+                sb.append(",\"tmp_max\":\"")
+                        .append(tmp_max).append('\"');
+                sb.append(",\"tmp_min\":\"")
+                        .append(tmp_min).append('\"');
+                sb.append(",\"uv_index\":\"")
+                        .append(uv_index).append('\"');
+                sb.append(",\"vis\":\"")
+                        .append(vis).append('\"');
+                sb.append(",\"wind_deg\":\"")
+                        .append(wind_deg).append('\"');
+                sb.append(",\"wind_dir\":\"")
+                        .append(wind_dir).append('\"');
+                sb.append(",\"wind_sc\":\"")
+                        .append(wind_sc).append('\"');
+                sb.append(",\"wind_spd\":\"")
+                        .append(wind_spd).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
 
             public String getCond_code_d() {
                 return cond_code_d;

@@ -1,4 +1,4 @@
-package cn.udday.simpleweather.Adapter;
+package cn.udday.simpleweather.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

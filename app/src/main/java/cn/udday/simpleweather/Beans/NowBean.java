@@ -120,6 +120,29 @@ public class NowBean implements Serializable {
             public String getTz() {
                 return tz;
             }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cid\":\"")
+                        .append(cid).append('\"');
+                sb.append(",\"location\":\"")
+                        .append(location).append('\"');
+                sb.append(",\"parent_city\":\"")
+                        .append(parent_city).append('\"');
+                sb.append(",\"admin_area\":\"")
+                        .append(admin_area).append('\"');
+                sb.append(",\"cnty\":\"")
+                        .append(cnty).append('\"');
+                sb.append(",\"lat\":\"")
+                        .append(lat).append('\"');
+                sb.append(",\"lon\":\"")
+                        .append(lon).append('\"');
+                sb.append(",\"tz\":\"")
+                        .append(tz).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
 
         public static class UpdateBean implements Serializable {
@@ -137,6 +160,17 @@ public class NowBean implements Serializable {
 
             public String getUtc() {
                 return utc;
+            }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"loc\":\"")
+                        .append(loc).append('\"');
+                sb.append(",\"utc\":\"")
+                        .append(utc).append('\"');
+                sb.append('}');
+                return sb.toString();
             }
         }
 
@@ -222,6 +256,71 @@ public class NowBean implements Serializable {
             public String getWind_spd() {
                 return wind_spd;
             }
+
+            @Override
+            public String toString() {
+                final StringBuilder sb = new StringBuilder("{");
+                sb.append("\"cloud\":\"")
+                        .append(cloud).append('\"');
+                sb.append(",\"cond_code\":\"")
+                        .append(cond_code).append('\"');
+                sb.append(",\"cond_txt\":\"")
+                        .append(cond_txt).append('\"');
+                sb.append(",\"fl\":\"")
+                        .append(fl).append('\"');
+                sb.append(",\"hum\":\"")
+                        .append(hum).append('\"');
+                sb.append(",\"pcpn\":\"")
+                        .append(pcpn).append('\"');
+                sb.append(",\"pres\":\"")
+                        .append(pres).append('\"');
+                sb.append(",\"tmp\":\"")
+                        .append(tmp).append('\"');
+                sb.append(",\"vis\":\"")
+                        .append(vis).append('\"');
+                sb.append(",\"wind_deg\":\"")
+                        .append(wind_deg).append('\"');
+                sb.append(",\"wind_dir\":\"")
+                        .append(wind_dir).append('\"');
+                sb.append(",\"wind_sc\":\"")
+                        .append(wind_sc).append('\"');
+                sb.append(",\"wind_spd\":\"")
+                        .append(wind_spd).append('\"');
+                sb.append('}');
+                return sb.toString();
+            }
         }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("{");
+            sb.append("\"basic\":")
+                    .append(basic);
+            sb.append(",\"update\":")
+                    .append(update);
+            sb.append(",\"status\":\"")
+                    .append(status).append('\"');
+            sb.append(",\"now\":")
+                    .append(now);
+            sb.append('}');
+            return sb.toString();
+        }
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"code\":")
+                .append(code);
+        sb.append(",\"msg\":\"")
+                .append(msg).append('\"');
+        sb.append(",\"data\":")
+                .append(data);
+        sb.append(",\"time\":")
+                .append(time);
+        sb.append(",\"log_id\":")
+                .append(log_id);
+        sb.append('}');
+        return sb.toString();
     }
 }
