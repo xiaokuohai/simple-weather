@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/frag_forecast_rl"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:gravity="center"
+    >
+        <TextView
+            android:id="@+id/frag_forecast_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:drawablePadding="5dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="洗车指数" />
+        <ImageView
+            android:id="@+id/frag_forecast_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/frag_forecast_title"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            />
+        <TextView
+            android:id="@+id/frag_forecast_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="不宜"
+            android:layout_below="@id/frag_forecast_iv"
+            />
+</RelativeLayout>

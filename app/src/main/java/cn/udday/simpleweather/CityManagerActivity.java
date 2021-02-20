@@ -2,14 +2,11 @@ package cn.udday.simpleweather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -49,6 +46,7 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
             NowBean nowBean = allBeans.get(i).getNowBean();
             mNowBeanDate.add(nowBean);
         }
+        //通知更新
         adapter.notifyDataSetChanged();
     }
 
@@ -79,11 +77,12 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()){
             case R.id.city_iv_add:
                 int cityCount = DBManager.getCityCount();
-                if (cityCount < 5){
+                //如果城市有4个就不能申请了,多了api申请有限制
+                if (cityCount < 4){
                 Intent intent = new Intent(this,CitySearchActivity.class);
                 startActivity(intent);
                 }else{
-                    Toast.makeText(this,"最多存储5个城市,请删除后再添加",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"最多存储4个城市,请删除后再添加",Toast.LENGTH_SHORT).show();
                 }
             break;
             case R.id.city_iv_delete:

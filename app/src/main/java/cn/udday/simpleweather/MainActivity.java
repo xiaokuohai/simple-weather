@@ -12,21 +12,21 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.udday.simpleweather.Beans.ForecastBean;
-import cn.udday.simpleweather.Beans.HourlyBean;
-import cn.udday.simpleweather.Beans.LifeBean;
 import cn.udday.simpleweather.Beans.NowBean;
 import cn.udday.simpleweather.adapter.WeatherFragmentAdapter;
 import cn.udday.simpleweather.db.DBManager;
-import cn.udday.simpleweather.utils.Constants;
-import cn.udday.simpleweather.utils.HttpBackListenter;
-import cn.udday.simpleweather.utils.Net;
+import cn.udday.simpleweather.utils.RetrofitImpl;
+import cn.udday.simpleweather.utils.WApi;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 
 public class MainActivity extends AppCompatActivity implements OnClickListener{
     private RelativeLayout mMainBaseLayout;
@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     private LinearLayout mMainLayoutPoint;
     private ViewPager2 mMainVp;
     //viewpager数据源集合
-    List<Fragment> fragmentList;
+    private List<Fragment> fragmentList;
     //viewpager指示
-    List<ImageView> imageViewList;
+    private List<ImageView> imageViewList;
     //传入的城市集合
     private ArrayList<String> cityList;
 
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     private void initNet() {
         cityList = DBManager.queryAllCityName();
         if (cityList.size() == 0){
+            //等待解决
             cityList.add("潼南");
         }
         //for (int i = 0; i < cityList.size(); i++) {
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
 //                }
 //            });
         //}
-
     }
 
     //搜索界面跳转接受值
@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         mMainVp.setAdapter(adapter);
         //创建下方指示
         initPoint();
-        //设置最后一个添加的为默认的显示
-        mMainVp.setCurrentItem(fragmentList.size()-1);
+        //设置最后一个添加的为默认的显示，此处会导致同时创建多个fragment然后后台禁止频繁申请导致die
+        //mMainVp.setCurrentItem(fragmentList.size()-1);
 
         //设置ViewPager页面监听
         setPagerListener();

@@ -1,4 +1,4 @@
-package cn.udday.simpleweather.utils;
+package cn.udday.simpleweather.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

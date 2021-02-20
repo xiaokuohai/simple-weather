@@ -1,4 +1,4 @@
-package cn.udday.simpleweather.utils;
+package cn.udday.simpleweather.retrofit;
 
 public class MyThrowable extends RuntimeException{
     private String msg;

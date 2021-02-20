@@ -13,6 +13,7 @@ public class Net {
     HourlyBean hourlyBean;
     LifeBean lifeBean;
     ForecastBean forecastBean;
+    //套娃回调
     public Net(String city,HttpBackListenter backListenter){
         WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
         wApi.postNowJson(city).enqueue(new Callback<NowBean>() {

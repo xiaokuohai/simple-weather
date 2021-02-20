@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import cn.udday.simpleweather.Beans.NowBean;
 import cn.udday.simpleweather.utils.Constants;
-import cn.udday.simpleweather.utils.MyThrowable;
+import cn.udday.simpleweather.retrofit.MyThrowable;
 import cn.udday.simpleweather.utils.RetrofitImpl;
 import cn.udday.simpleweather.utils.WApi;
 import retrofit2.Call;
@@ -54,6 +54,7 @@ public class CitySearchActivity extends AppCompatActivity implements View.OnClic
         mSearchGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击添加城市
                 toMain(Constants.HOTCITYS[position]);
             }
         });
@@ -65,7 +66,7 @@ public class CitySearchActivity extends AppCompatActivity implements View.OnClic
         mSearchGv = findViewById(R.id.search_gv);
         mSearchIvSubmit = findViewById(R.id.search_iv_submit);
         mSearchIvSubmit.setOnClickListener(this);
-        //设置适配器
+
         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this, R.layout.item_city_search_hotcity, Constants.HOTCITYS);
         mSearchGv.setAdapter(stringArrayAdapter);
 
@@ -81,7 +82,6 @@ public class CitySearchActivity extends AppCompatActivity implements View.OnClic
                 if (!TextUtils.isEmpty(s)) {
                 //先判断是否存在这个城市
                     WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
-                    //实时天气
                     wApi.postNowJson(s).enqueue(new Callback<NowBean>() {
                         @Override
                         public void onResponse(Call<NowBean> call, Response<NowBean> response) {
@@ -98,6 +98,7 @@ public class CitySearchActivity extends AppCompatActivity implements View.OnClic
                             handler.sendMessage(message);
                         }
                     });
+                    //422为错误城市返回值
                     if (code == 422){
                         Toast.makeText(this,"你输入的城市未收录或者不存在",Toast.LENGTH_SHORT).show();
                     }
@@ -110,6 +111,7 @@ public class CitySearchActivity extends AppCompatActivity implements View.OnClic
     //搜索界面转到main，并且输去city
     private void toMain(String city) {
         Intent intent = new Intent(this,MainActivity.class);
+        //清空栈
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("city",city);
         startActivity(intent);

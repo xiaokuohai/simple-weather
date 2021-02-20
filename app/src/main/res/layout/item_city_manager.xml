@@ -9,20 +9,28 @@
         android:id="@+id/item_city_cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
         app:cardElevation="5dp"
-        app:contentPadding="10dp">
+        app:cardCornerRadius="10dp"
+        >
+        <ImageView
+            android:id="@+id/item_city_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/item_city_tv_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="北京"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
                 android:paddingTop="15dp"/>
             <TextView
                 android:id="@+id/item_city_tv_temp"
@@ -30,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="8℃"
                 android:textSize="40sp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"/>
         </RelativeLayout>

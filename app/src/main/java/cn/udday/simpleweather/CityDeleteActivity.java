@@ -32,6 +32,7 @@ public class CityDeleteActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        //删除后更新
         ArrayList<String> cityList = DBManager.queryAllCityName();
         mDatas.addAll(cityList);
         adpter.notifyDataSetChanged();
@@ -40,6 +41,7 @@ public class CityDeleteActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+        //使用自带返回也返回到主界面
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
@@ -59,6 +61,7 @@ public class CityDeleteActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.delete_iv_back:
+                //删除后返回主界面
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
                 break;

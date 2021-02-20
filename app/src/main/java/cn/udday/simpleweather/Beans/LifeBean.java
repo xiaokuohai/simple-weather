@@ -19,6 +19,22 @@ public class LifeBean implements Serializable {
     private int time;
     private long log_id;
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public long getLog_id() {
+        return log_id;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
@@ -52,6 +68,18 @@ public class LifeBean implements Serializable {
         private UpdateBean update;
         private String status;
         private List<LifestyleBean> lifestyle;
+
+        public BasicBean getBasic() {
+            return basic;
+        }
+
+        public UpdateBean getUpdate() {
+            return update;
+        }
+
+        public String getStatus() {
+            return status;
+        }
 
         @Override
         public String toString() {

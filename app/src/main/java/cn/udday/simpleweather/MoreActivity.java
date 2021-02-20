@@ -20,12 +20,9 @@ import cn.udday.simpleweather.db.DBManager;
 public class MoreActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mMoreIvBack;
-    private TextView mMoreTvChangebg;
-    private RadioGroup mMoreRg;
     private TextView mMoreTvVersion;
     private TextView mMoreTvCache;
     private TextView mMoreTvShare;
-    private SharedPreferences bg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,48 +35,6 @@ public class MoreActivity extends AppCompatActivity implements View.OnClickListe
     private void setView() {
         String version = getVersion();
         mMoreTvVersion.setText("当前版本:" + version);
-        rgListener();
-    }
-
-    private void rgListener() {
-        //切换壁纸监听
-        mMoreRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                //获取目前壁纸
-                int bgid = bg.getInt("bgid", 0);
-                SharedPreferences.Editor edit = bg.edit();
-                Intent intent = new Intent(MoreActivity.this,MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                switch (checkedId) {
-                    case R.id.more_rb_green:
-                        if (bgid == 0){
-                            Toast.makeText(MoreActivity.this,"你选择的是当前壁纸",Toast.LENGTH_SHORT).show();
-                        }
-                        edit.putInt("bgid",0);
-                        edit.commit();
-
-                        break;
-                    case R.id.more_rb_pink:
-                        if (bgid == 1){
-                            Toast.makeText(MoreActivity.this,"你选择的是当前壁纸",Toast.LENGTH_SHORT).show();
-                        }
-                        edit.putInt("bgid",1);
-                        edit.commit();
-                        break;
-
-                    case R.id.more_rb_bule:
-                        if (bgid == 2){
-                            Toast.makeText(MoreActivity.this,"你选择的是当前壁纸",Toast.LENGTH_SHORT).show();
-                        }
-                        edit.putInt("bgid",2);
-                        edit.commit();
-                        break;
-                }
-                startActivity(intent);
-            }
-        });
     }
 
     private String getVersion() {
@@ -96,18 +51,13 @@ public class MoreActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initView() {
         mMoreIvBack = findViewById(R.id.more_iv_back);
-        mMoreTvChangebg = findViewById(R.id.more_tv_changebg);
-        mMoreRg = findViewById(R.id.more_rg);
         mMoreTvVersion = findViewById(R.id.more_tv_version);
         mMoreTvCache = findViewById(R.id.more_tv_cache);
         mMoreTvShare = findViewById(R.id.more_tv_share);
 
         mMoreIvBack.setOnClickListener(this);
-        mMoreTvChangebg.setOnClickListener(this);
         mMoreTvCache.setOnClickListener(this);
         mMoreTvShare.setOnClickListener(this);
-
-         bg = getSharedPreferences("bg", MODE_PRIVATE);
     }
 
     @Override
@@ -116,13 +66,6 @@ public class MoreActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.more_iv_back:
                 Intent intent = new Intent(MoreActivity.this, MainActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.more_tv_changebg:
-                if (mMoreRg.getVisibility() == View.VISIBLE){
-                    mMoreRg.setVisibility(View.GONE);
-                }else{
-                    mMoreRg.setVisibility(View.VISIBLE);
-                }
                 break;
             case R.id.more_tv_cache:
                 clearDate();

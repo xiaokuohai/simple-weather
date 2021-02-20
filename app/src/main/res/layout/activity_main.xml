@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/bg">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/main_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </androidx.viewpager2.widget.ViewPager2>
     <RelativeLayout
         android:id="@+id/main_bottom_layout"
         android:layout_width="match_parent"
@@ -13,12 +19,14 @@
         android:id="@+id/main_iv_add"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@mipmap/icon_add"/>
+            android:layout_marginLeft="5dp"
+        android:src="@mipmap/icon_city"/>
         <ImageView
             android:id="@+id/main_iv_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_more"
+            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"/>
         <LinearLayout
             android:id="@+id/main_layout_point"
@@ -29,12 +37,5 @@
 
         </LinearLayout>
     </RelativeLayout>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/main_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/main_bottom_layout"
-        >
 
-    </androidx.viewpager2.widget.ViewPager2>
 </RelativeLayout>

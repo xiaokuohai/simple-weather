@@ -19,6 +19,26 @@ public class HourlyBean implements Serializable {
     private int time;
     private long log_id;
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public DataBean getData() {
+        return data;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public long getLog_id() {
+        return log_id;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("{");
@@ -165,6 +185,14 @@ public class HourlyBean implements Serializable {
 
             private String loc;
             private String utc;
+
+            public String getLoc() {
+                return loc;
+            }
+
+            public String getUtc() {
+                return utc;
+            }
 
             @Override
             public String toString() {

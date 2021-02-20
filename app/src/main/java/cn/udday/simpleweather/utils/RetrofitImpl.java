@@ -2,10 +2,10 @@ package cn.udday.simpleweather.utils;
 
 import android.util.Log;
 
+import cn.udday.simpleweather.retrofit.MyConverterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitImpl {
 

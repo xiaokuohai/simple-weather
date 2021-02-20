@@ -6,7 +6,7 @@
     android:id="@+id/city_top_layout"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="#F5F5F5">
+    android:background="@color/top_F5F5F5">
     <ImageView
         android:id="@+id/city_top_iv_back"
         android:layout_width="wrap_content"
@@ -48,6 +48,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="30dp"
-        android:background="#87CEEB"
-        android:padding="3dp"/>
+        android:background="@drawable/button_bg"
+        android:padding="3dp" />
 </RelativeLayout>
