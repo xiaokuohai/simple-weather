@@ -4,29 +4,19 @@
 
 显示城市当前的实时天气状况，包括城市名称、城市名片、天气情况、温度高低、时间等信息。同时对未来6天的天气情况简要描述，简要显示星期、天气描述、温度高低等数据，能获取实时的生活指数，使用户一目了然，使人们及时了解天气变化，对日常生活出行、穿衣做好准备。
 
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/mind.jpg)
 
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p1.jpg)
 
-![image-20210221184726595](C:\Users\枭\AppData\Roaming\Typora\typora-user-images\image-20210221184726595.png)
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p2.jpg)
 
-主界面
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p3.jpg)
 
-![Screenshot_20210221_181238](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181238.jpg)
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p4.jpg)
 
-城市管理界面
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/g1.gif)
 
-![Screenshot_20210221_181252](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181252.jpg)![Screenshot_20210221_181243](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181243.jpg)
-
-城市搜索界面
-
-![](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181247.jpg)
-
-![Screenrecording_20210221_181329.mp4_20210221_182113](D:\potplayer\PotPlayer64\Capture\Screenrecording_20210221_181329.mp4_20210221_182113.gif)
-
-
-
-![Screenrecording_20210221_181329.mp4_20210221_182303](D:\potplayer\PotPlayer64\Capture\Screenrecording_20210221_181329.mp4_20210221_182303.gif)
-
-
+![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/g2.gif)
 
 ## 心得
 
