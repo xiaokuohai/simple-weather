@@ -4,19 +4,19 @@
 
 显示城市当前的实时天气状况，包括城市名称、城市名片、天气情况、温度高低、时间等信息。同时对未来6天的天气情况简要描述，简要显示星期、天气描述、温度高低等数据，能获取实时的生活指数，使用户一目了然，使人们及时了解天气变化，对日常生活出行、穿衣做好准备。
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/mind.jpg)
+![](https://github.com/xiaokuohai/simple-weather/blob/master/app/image/mind.jpg)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p1.jpg)
+![](https://github.com/xiaokuohai/simple-weather/blob/master/app/image/p1.jpg)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p2.jpg)
+![](https://github.com/xiaokuohai/simple-weather/blob/master/app/image/p2.jpg)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p3.jpg)
+![](https://github.com/xiaokuohai/simple-weather/blob/master/app/image/p3.jpg)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/p4.jpg)
+![](https://github.com/xiaokuohai/simple-weather/blob/master/app/image/p4.jpg)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/g1.gif)
+![](gif/https://github.com/xiaokuohai/simple-weather/blob/master/app/image/g1.gif)
 
-![](https://gitee.com/xiaokuohai/simple-weather/blob/master/app/image/g2.gif)
+![](gif/https://github.com/xiaokuohai/simple-weather/blob/master/app/image/g2.gif)
 
 ## 心得
 
