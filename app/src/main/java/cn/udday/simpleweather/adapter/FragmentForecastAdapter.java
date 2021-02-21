@@ -137,7 +137,7 @@ public class FragmentForecastAdapter extends RecyclerView.Adapter<FragmentForeca
                 t = R.mipmap.ic_uv;
                 break;
             case "cw":
-                t = R.mipmap.ic_comf;
+                t = R.mipmap.ic_car;
                 break;
             case "air":
                 t = R.mipmap.ic_air;

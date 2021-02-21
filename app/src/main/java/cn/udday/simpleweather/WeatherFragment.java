@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.material.transition.MaterialContainerTransform;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -104,6 +106,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initNet();
+        new MaterialFadeThrough();
     }
 
     private void initNet() {
@@ -132,38 +135,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
 
             }
         });
-//        WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
-//        wApi.postNowJson(city).enqueue(new Callback<NowBean>() {
-//            @Override
-//            public void onResponse(Call<NowBean> call, Response<NowBean> nowBeanResponse) {
-//                wApi.postForecastJson(city).enqueue(new Callback<ForecastBean>() {
-//                    @Override
-//                    public void onResponse(Call<ForecastBean> call, Response<ForecastBean> forecastBeanResponse) {
-//                        NowBean nowBean = nowBeanResponse.body();
-//                        ForecastBean forecastBean = forecastBeanResponse.body();
-//
-//                        int t = DBManager.upDateDateByCity(city, nowBean.toString(), Constants.DATE_NOW);
-//                        DBManager.upDateDateByCity(city, forecastBean.toString(), Constants.DATE_FORECAST);
-//                        if (t <= 0) {
-//                            //更新数据库失败，及没有这个城市，就增加这条记录
-//                            DBManager.addCityDate(city, nowBean.toString(), Constants.DATE_NOW);
-//                            DBManager.upDateDateByCity(city, forecastBean.toString(), Constants.DATE_FORECAST);
-//                        }
-//                        initDate();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ForecastBean> call, Throwable t) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NowBean> call, Throwable t) {
-//                Toast.makeText(getContext(),"网络错误",Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void initDate() {
@@ -317,8 +288,8 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
     private void putLifeDate(LifeBean lifeBean){
         List<LifeBean.DataBean.LifestyleBean> lifestyleBeanList = lifeBean.getData().getLifestyle();
         FragmentForecastAdapter fragmentForecastAdapter = new FragmentForecastAdapter(getActivity(), lifestyleBeanList);
-        GridLayoutManager manager = new GridLayoutManager(getActivity(),1);
-        manager.setOrientation(RecyclerView.HORIZONTAL);
+        GridLayoutManager manager = new GridLayoutManager(getActivity(),3);
+        manager.setOrientation(RecyclerView.VERTICAL);
 
         mFragFRv.setLayoutManager(manager);
         mFragFRv.setAdapter(fragmentForecastAdapter);

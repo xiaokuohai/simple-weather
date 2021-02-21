@@ -19,14 +19,14 @@
         android:id="@+id/main_iv_add"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
         android:src="@mipmap/icon_city"/>
         <ImageView
             android:id="@+id/main_iv_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_more"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="15dp"
             android:layout_alignParentRight="true"/>
         <LinearLayout
             android:id="@+id/main_layout_point"

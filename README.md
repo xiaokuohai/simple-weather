@@ -1,39 +1,56 @@
- # simple weather
+# 天气预报开发APP
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+## 介绍
 
-#### 软件架构
-软件架构说明
+显示城市当前的实时天气状况，包括城市名称、城市名片、天气情况、温度高低、时间等信息。同时对未来6天的天气情况简要描述，简要显示星期、天气描述、温度高低等数据，能获取实时的生活指数，使用户一目了然，使人们及时了解天气变化，对日常生活出行、穿衣做好准备。
 
 
-#### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+![image-20210221184726595](C:\Users\枭\AppData\Roaming\Typora\typora-user-images\image-20210221184726595.png)
 
-#### 使用说明
+主界面
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+![Screenshot_20210221_181238](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181238.jpg)
 
-#### 参与贡献
+城市管理界面
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+![Screenshot_20210221_181252](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181252.jpg)![Screenshot_20210221_181243](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181243.jpg)
+
+城市搜索界面
+
+![](C:\Users\枭\Documents\Tencent Files\2457968197\FileRecv\MobileFile\Screenshot_20210221_181247.jpg)
+
+![Screenrecording_20210221_181329.mp4_20210221_182113](D:\potplayer\PotPlayer64\Capture\Screenrecording_20210221_181329.mp4_20210221_182113.gif)
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+![Screenrecording_20210221_181329.mp4_20210221_182303](D:\potplayer\PotPlayer64\Capture\Screenrecording_20210221_181329.mp4_20210221_182303.gif)
+
+
+
+## 心得
+
+1.是意识到了框架的重要性，越写我心越累，软件工程毕竟是工程
+
+2.使用了retrofit,(自己okhttp+解析也写过，并不是很快乐)
+
+4.回调和线程,生命周期理解加深(真的不是被折磨出来的)
+
+3.ViewPager(2),ListView,Recycview,AlertDialog,handler还有些什么UI
+
+4.和后台协商真的很重要,文档真的很重要
+
+5.好看的UI顶好多东西
+
+## 待提升
+
+1.数据库管理，因为有四个bean，数据库存储和取出都比较粗糙
+
+2.网络数据请求，一个城市4个请求,城市数量多了同时请求后端返回错误
+
+3.UI设计，心痛
+
+4.rxjava还没学..
+
+5.代码规范
+

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">simpleweather</string>
+    <string name="app_name">简单天气</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fail_city">该城市未收录或者不存在</string>

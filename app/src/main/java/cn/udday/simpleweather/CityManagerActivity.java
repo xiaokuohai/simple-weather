@@ -77,12 +77,12 @@ public class CityManagerActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()){
             case R.id.city_iv_add:
                 int cityCount = DBManager.getCityCount();
-                //如果城市有4个就不能申请了,多了api申请有限制
-                if (cityCount < 4){
+                //如果城市有8个就不能申请了
+                if (cityCount < 8){
                 Intent intent = new Intent(this,CitySearchActivity.class);
                 startActivity(intent);
                 }else{
-                    Toast.makeText(this,"最多存储4个城市,请删除后再添加",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"最多存储8个城市,请删除后再添加",Toast.LENGTH_SHORT).show();
                 }
             break;
             case R.id.city_iv_delete:
