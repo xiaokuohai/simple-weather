@@ -76,6 +76,12 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
 
         return view;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initNet();
+        new MaterialFadeThrough();
+    }
 
     private void setView(View view) {
         mFragHourlyLayout.setOnClickListener(new View.OnClickListener() {
@@ -99,14 +105,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
                 }
             }
         });
-    }
-
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initNet();
-        new MaterialFadeThrough();
     }
 
     private void initNet() {
@@ -187,7 +185,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener{
             ImageView mItemCenterIv = itemview.findViewById(R.id.item_center_iv);
             //数据填充
             ForecastBean.DataBean.DailyForecastBean forecastBean1 = forecastList.get(i);
-            mItemCenterTvDate.setText(forecastBean1.getDate());
+            mItemCenterTvDate.setText(forecastBean1.getDate().substring(5,10));
             mItemCenterTvCon.setText(forecastBean1.getCond_txt_d());
             mItemCenterTvTemp.setText(forecastBean1.getTmp_min()+"℃~"+forecastBean1.getTmp_max()+"℃");
             //根据天气设置图片

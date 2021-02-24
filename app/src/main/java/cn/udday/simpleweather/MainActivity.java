@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.io.IOException;
+import java.nio.file.Watchable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,46 +49,12 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initNet();
         initView();
         changeBg();
         setView();
         //搜索界面传值
         getCityFromSearch();
         initPager();
-        setPager();
-    }
-
-    private void initNet() {
-        cityList = DBManager.queryAllCityName();
-        if (cityList.size() == 0){
-            //等待解决
-            cityList.add("潼南");
-        }
-        //for (int i = 0; i < cityList.size(); i++) {
-            //int finalI = i;
-//            new Net(cityList.get(i), new HttpBackListenter() {
-//                @Override
-//                public void onSuccess(NowBean nowBean, ForecastBean forecastBean, LifeBean lifeBean, HourlyBean hourlyBean) {
-//                    int t = DBManager.upDateDateByCity(cityList.get(finalI), nowBean.toString(), Constants.DATE_NOW);
-//                    DBManager.upDateDateByCity(cityList.get(finalI), forecastBean.toString(), Constants.DATE_FORECAST);
-//                    DBManager.upDateDateByCity(cityList.get(finalI), lifeBean.toString(), Constants.DATE_LIFE);
-//                    DBManager.upDateDateByCity(cityList.get(finalI), hourlyBean.toString(), Constants.DATE_HOURLY);
-//                    if (t <= 0) {
-//                        //更新数据库失败，及没有这个城市，就增加这条记录
-//                        DBManager.addCityDate(cityList.get(finalI), nowBean.toString(), Constants.DATE_NOW);D
-//                        DBManager.addCityDate(cityList.get(finalI), forecastBean.toString(), Constants.DATE_FORECAST);
-//                        DBManager.addCityDate(cityList.get(finalI), lifeBean.toString(), Constants.DATE_LIFE);
-//                        DBManager.addCityDate(cityList.get(finalI), hourlyBean.toString(), Constants.DATE_HOURLY);
-//                    }
-//                }
-//
-//                @Override
-//                public void onError(Call call, Throwable t) {
-//
-//                }
-//            });
-        //}
     }
 
     //搜索界面跳转接受值
@@ -96,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     String city = intent.getStringExtra("city");
     //判断是否存在于list
         if (!cityList.contains(city) && city != null){
-            cityList.add(city);
+            cityList.add(0,city);
         }
     }
 
@@ -143,15 +110,32 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
     }
 
     private void initPager() {
-        //创建Fragment对象，添加到viewPager数据源中
-        for (int i = 0; i < cityList.size(); i++) {
-            WeatherFragment weatherFragment = new WeatherFragment();
-            //将城市名字传入WeatherFragment中
-            Bundle bundle = new Bundle();
-            bundle.putString("city",cityList.get(i));
-            weatherFragment.setArguments(bundle);
-            fragmentList.add(weatherFragment);
-        }
+            WApi wApi = RetrofitImpl.getRetrofit().create(WApi.class);
+            wApi.getNowJson().enqueue(new Callback<NowBean>() {
+                @Override
+                public void onResponse(Call<NowBean> call, Response<NowBean> response) {
+                    if (cityList.size() == 0){
+                        String cnty = response.body().getData().getBasic().getLocation();
+                        cityList.add(cnty);
+                    }
+                    //创建Fragment对象，添加到viewPager数据源中
+                    for (int i = 0; i < cityList.size(); i++) {
+                        WeatherFragment weatherFragment = new WeatherFragment();
+                        //将城市名字传入WeatherFragment中
+                        Bundle bundle = new Bundle();
+                        bundle.putString("city",cityList.get(i));
+                        weatherFragment.setArguments(bundle);
+                        fragmentList.add(weatherFragment);
+                    }
+                    setPager();
+                }
+
+                @Override
+                public void onFailure(Call<NowBean> call, Throwable t) {
+
+                }
+            });
+
 
     }
 
@@ -163,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         mMainVp = findViewById(R.id.main_vp);
 
         fragmentList = new ArrayList<>();
-
         imageViewList = new ArrayList<>();
+        cityList = DBManager.queryAllCityName();
     }
 
     public void setView(){
